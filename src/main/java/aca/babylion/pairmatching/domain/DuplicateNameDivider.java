@@ -19,11 +19,8 @@ public class DuplicateNameDivider {
     public static final String NAME_SIGNATURE_DELIMITER = "_";
 
     public List<String> addSignatureIfDuplicateName(final List<String> names) {
-        final ExtractDuplicateNameResult result = extractDuplicateName(names);
-        final List<String> duplicateNames = result.getDuplicateNames();
-        final Set<String> distinctNames = result.getDistinctNames();
+        final Set<String> distinctNames = new HashSet<>(names);
 
-        // 김멋사 3개, 이테킷 2개, 최백엔 1개
         final Map<String, List<String>> newNamesByPureName = distinctNames.stream()
                 .collect(Collectors.toMap(Function.identity(), name -> filterNameEquals(names, name)));
 
@@ -49,33 +46,5 @@ public class DuplicateNameDivider {
         return duplicateNames.stream()
                 .filter(it -> it.equals(name))
                 .collect(Collectors.toList());
-    }
-
-    private ExtractDuplicateNameResult extractDuplicateName(final List<String> names) {
-        final Set<String> duplicateNames = new HashSet<>();
-        final Set<String> distinctNames = new HashSet<>();
-
-        for (String name : names) {
-            divideDuplicateAndDistinct(duplicateNames, distinctNames, name);
-        }
-
-        return new ExtractDuplicateNameResult(
-                names.stream()
-                        .filter(duplicateNames::contains)
-                        .collect(Collectors.toList()),
-                distinctNames
-        );
-    }
-
-    private void divideDuplicateAndDistinct(
-            final Set<String> duplicateNames,
-            final Set<String> distinctNames,
-            final String name
-    ) {
-        if (distinctNames.contains(name)) {
-            duplicateNames.add(name);
-            return;
-        }
-        distinctNames.add(name);
     }
 }
