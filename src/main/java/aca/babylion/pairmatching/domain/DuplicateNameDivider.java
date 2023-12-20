@@ -1,6 +1,5 @@
 package aca.babylion.pairmatching.domain;
 
-import aca.babylion.pairmatching.domain.dto.ExtractDuplicateNameResult;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
